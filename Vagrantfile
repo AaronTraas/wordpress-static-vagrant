@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
     config.ssh.forward_agent = true
 
     # First VM -- app server that hosts Wordpress on LAMP. 
-    config.vm.define "wordpress-static-app" do |app|
+    config.vm.define "app-server" do |app|
         app.vm.provider :virtualbox do |v|
             v.name = VM_NAME_APP
             v.customize [
@@ -50,7 +50,7 @@ Vagrant.configure("2") do |config|
     end
     
     # Second VM -- web server hosting static files via nginx
-    config.vm.define "wordpress-static-web" do |web|
+    config.vm.define "web-server" do |web|
         web.vm.provider :virtualbox do |v|
             v.name = VM_NAME_WEB
             v.customize [
