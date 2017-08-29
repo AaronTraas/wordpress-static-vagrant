@@ -16,7 +16,7 @@
     - expires
     - filter
 
-- name: Create/update virtual host
+- name: Create/update virtual host '{{ servername }}.conf'
   template: src=vhost.conf.j2
             dest=/etc/apache2/sites-available/{{ servername }}.conf
   notify: restart apache
@@ -25,8 +25,6 @@
   shell: a2dissite 000-default.conf
   notify: restart apache
 
-- name: Enable apache vhost
-  shell: a2ensite {{ item }}
-  with_items:
-      - "{{ servername }}.conf"
+- name: Enable virtual host '{{ servername }}.conf'
+  shell: a2ensite {{ servername }}.conf
   notify: restart apache

@@ -33,7 +33,7 @@
     login_user=root 
     login_password={{ mysql_root_password }}
 
-- name: Create users
+- name: Create MySQL user '{{ mysql_user }} '
   mysql_user: > 
     name={{ mysql_user }} 
     password={{ mysql_password }} 
@@ -42,7 +42,7 @@
     login_user=root 
     login_password={{ mysql_root_password }}
 
-- name: Import
+- name: Import '{{ mysql_backup_filename }}'
   mysql_db: >
     name={{ mysql_database }}
     state=import
