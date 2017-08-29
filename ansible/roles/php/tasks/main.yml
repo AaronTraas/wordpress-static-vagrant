@@ -1,0 +1,30 @@
+- name: Install PHP Packages
+  apt: pkg={{ item }}
+       state=latest
+  with_items: "{{ php_packages }}"
+
+- name: enable php-mcrypt config
+  shell: phpenmod mcrypt;
+  notify:
+    - restart apache
+
+- name: Ensure timezone is set in php.ini
+  ini_file: dest={{ item }}
+            section=Date
+            option=date.timezone
+            value={{ timezone }}
+            backup=yes
+  with_items:
+    - /etc/php/7.0/apache2/php.ini
+    - /etc/php/7.0/cli/php.ini
+
+- name: display php errors when not in production
+  ini_file: dest={{ item }}
+            section=PHP
+            option=error_reporting
+            value="E_ALL & ~E_NOTICE"
+  with_items:
+    - /etc/php/7.0/apache2/php.ini
+    - /etc/php/7.0/cli/php.ini
+  notify:
+  - restart apache

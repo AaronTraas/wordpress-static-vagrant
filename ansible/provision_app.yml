@@ -1,0 +1,40 @@
+# syntax: ansible-playbook -i inventories/production provision.yml
+
+---
+# This section is needed to install Python 2.7 on Ubuntu 16.04. Because
+# Ansible depends on the target machine having Python 2.x, we can't
+# gather facts, and have to resort to using the Ansible 'raw' module,
+# which executes raw console commands.
+- hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install python 2.7
+      raw: apt-get update -qq; apt-get install -qq python2.7
+
+# provisioning as normal
+- hosts: all
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python2.7
+    timezone: America/New_York
+    locale: en_US.UTF-8
+    system_packages:
+      - nano
+    php_packages:
+      - php
+      - php-mysql
+      - libapache2-mod-php
+
+  roles:
+    - server
+    - vagrant_local
+    - apache
+    - mysql
+    - php
+
+  post_tasks:
+    - name: open URL
+      become: no
+      local_action: shell open {{ base_url }}
+      ignore_errors: yes

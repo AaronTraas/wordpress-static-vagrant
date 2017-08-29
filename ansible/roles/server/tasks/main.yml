@@ -1,0 +1,15 @@
+---
+- name: Install System Packages
+  apt: pkg={{ item }}
+       update_cache=yes
+       state=latest
+  with_items: "{{ system_packages }}"
+
+- name: Configure the timezone
+  template: src=timezone.tpl dest=/etc/timezone
+
+- name: More Configure the timezone
+  file: src=/usr/share/zoneinfo/{{timezone}} dest=/etc/localtime state=link force=yes backup=yes
+
+- name: Set default system language pack
+  shell: locale-gen {{locale}}

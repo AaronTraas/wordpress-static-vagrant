@@ -1,0 +1,32 @@
+---
+- name: Install Apache
+  apt: pkg={{ item }}
+       state=latest
+  with_items:
+      - apache2
+
+- name: Install Apache Modules
+  apache2_module: state=present
+                  name={{ item }}
+  notify: restart apache
+  with_items:
+    - rewrite
+    - vhost_alias
+    - headers
+    - expires
+    - filter
+
+- name: Create/update virtual host
+  template: src=vhost.conf.j2
+            dest=/etc/apache2/sites-available/{{ servername }}.conf
+  notify: restart apache
+
+- name: Disable default vhost
+  shell: a2dissite 000-default.conf
+  notify: restart apache
+
+- name: Enable apache vhost
+  shell: a2ensite {{ item }}
+  with_items:
+      - "{{ servername }}.conf"
+  notify: restart apache
