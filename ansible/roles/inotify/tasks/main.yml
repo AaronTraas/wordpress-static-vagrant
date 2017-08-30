@@ -1,0 +1,32 @@
+---
+- name: Install inotify
+  apt: pkg={{ item }}
+       state=latest
+  with_items:
+    - inotify-tools
+    - procps
+
+- name: deploy sync script
+  copy: 
+    src: staticsync.sh
+    dest: /usr/local/bin/staticsync.sh
+    mode: 0755
+
+- name: deploy sync script systemd entry
+  copy: 
+    src: staticsync.service
+    dest: /etc/systemd/system/staticsync.service
+    mode: 0755
+
+- name: start script
+  shell: systemctl daemon-reload
+  
+- name: create /var/www/export
+  file: 
+    dest: /var/www/export
+    state: directory
+    mode: 0777
+
+# FIXME: make idempotent    
+- name: Get SSH keys from static server
+  shell: ssh-keyscan 10.99.0.3 >> /home/ubuntu/.ssh/known_hosts

@@ -58,10 +58,8 @@ In the terminal. This will create 2 VMs, one for each role.
 - *user:* admin
 - *password:* password
 
-### app-server:
+### web-server:
 - *URL:* http://10.99.0.3/
-- *user:* admin
-- *password:* password
 
 ## Backing up the database for development:
 
@@ -69,3 +67,11 @@ In the terminal. This will create 2 VMs, one for each role.
 vagrant ssh app-server
 mysqldump wordpress --user=wordpress --password=mysqlpassword > /vagrant/src/sql/wordpress.sql
 ```
+
+# Publish content:
+
+1. log into Wordpress on *app-server*
+2. make any content edits you want to make
+3. navigate to "Simply Static" -> "Generate"
+4. click "Generate Static Files"
+5. browser to *web-server* to view static version of web site

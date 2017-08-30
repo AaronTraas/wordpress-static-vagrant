@@ -33,6 +33,7 @@
     - apache
     - mysql
     - php
+    - inotify
 
   post_tasks:
     - name: open URL

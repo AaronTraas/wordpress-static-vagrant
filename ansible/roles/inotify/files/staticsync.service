@@ -1,0 +1,17 @@
+[Unit]
+Description=Syncs export directory on file change
+After=network.target
+
+[Service]
+PIDFile = /tmp/staticsync/staticsync.pid 
+ExecStartPre = /bin/mkdir /tmp/staticsync  
+ExecStart=/usr/local/bin/staticsync.sh
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop = /bin/kill -s TERM $MAINPID  
+ExecStopPost = /bin/rm -rf /tmp/staticsync  
+Restart=on-failure
+RestartPreventExitStatus=255
+
+[Install]
+WantedBy=multi-user.target
+Alias=staticsync.service
