@@ -1,3 +1,11 @@
+---
 - name: Install nginx
   apt: pkg=nginx
        state=latest
+
+- name: set permissions in '/usr/share/nginx/html/'
+  file: 
+      dest: /var/www/
+      owner: ubuntu
+      group: ubuntu
+      recurse: yes

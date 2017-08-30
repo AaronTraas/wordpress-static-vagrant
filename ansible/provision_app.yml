@@ -19,9 +19,12 @@
     locale: en_US.UTF-8
     system_packages:
       - nano
+      - curl
+      - sshpass
     php_packages:
       - php
       - php-mysql
+      - php-curl
       - libapache2-mod-php
 
   roles:

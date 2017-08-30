@@ -13,3 +13,32 @@
 
 - name: Set default system language pack to '{{locale}}'
   shell: locale-gen {{locale}}
+
+- name: create upload user and set password to 'foo'
+  user:
+    name: ubuntu
+    groups: sudo
+    password: $6$OrEzAayKx$K.FsrttGWLBJdefs1sf.aEsf4ZIzBWYxu5/WkVUieJ33YvGAHyO6S.bag5FeiL7aJCIg8MQ7aZ7ooYMONQCku1
+    state: present
+    update_password: always
+
+- name: copy public key for user 'ubuntu'
+  copy: 
+      src: id_rsa.pub
+      dest: /home/ubuntu/.ssh/id_rsa.pub
+      owner: ubuntu
+      group: ubuntu
+      mode: 0600
+      
+- name: copy private key for user 'ubuntu'
+  copy: 
+      src: id_rsa
+      dest: /home/ubuntu/.ssh/id_rsa
+      owner: ubuntu
+      group: ubuntu
+      mode: 0600
+
+- name: Install the ssh keys for user 'ubuntu'
+  authorized_key:
+    user: ubuntu
+    key: "{{ lookup('file', 'id_rsa.pub') }}"

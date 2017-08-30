@@ -62,3 +62,10 @@ In the terminal. This will create 2 VMs, one for each role.
 - *URL:* http://10.99.0.3/
 - *user:* admin
 - *password:* password
+
+## Backing up the database for development:
+
+```
+vagrant ssh app-server
+mysqldump wordpress --user=wordpress --password=mysqlpassword > /vagrant/src/sql/wordpress.sql
+```

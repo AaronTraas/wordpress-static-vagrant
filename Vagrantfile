@@ -9,7 +9,7 @@ IP_ADDRESS_WEB = "10.99.0.3"
 Vagrant.configure("2") do |config|
 
     config.vm.box = "ubuntu/xenial64"
-    config.ssh.forward_agent = true
+    #config.ssh.forward_agent = true
 
     # First VM -- app server that hosts Wordpress on LAMP. 
     config.vm.define "app-server" do |app|
